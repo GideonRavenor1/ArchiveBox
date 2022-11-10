@@ -11,7 +11,7 @@ from datetime import date, datetime
 from typing import Dict, List, Optional, Iterable, IO, Union
 from crontab import CronTab, CronSlices
 from django.db.models import QuerySet
-
+from django.core.management import call_command
 from .cli import (
     list_subcommands,
     run_subcommand,
@@ -335,19 +335,20 @@ def init(force: bool=False, quick: bool=False, setup: bool=False, out_dir: Path=
     print(f'    + ./{CONFIG_FILE.relative_to(OUTPUT_DIR)}...')
     write_config_file({}, out_dir=out_dir)
 
-    if (out_dir / SQL_INDEX_FILENAME).exists():
-        print('\n{green}[*] Verifying main SQL index and running any migrations needed...{reset}'.format(**ANSI))
-    else:
-        print('\n{green}[+] Building main SQL index and running initial migrations...{reset}'.format(**ANSI))
+    # if (out_dir / SQL_INDEX_FILENAME).exists():
+    #     print('\n{green}[*] Verifying main SQL index and running any migrations needed...{reset}'.format(**ANSI))
+    # else:
+    #     print('\n{green}[+] Building main SQL index and running initial migrations...{reset}'.format(**ANSI))
     
-    DATABASE_FILE = out_dir / SQL_INDEX_FILENAME
-    for migration_line in apply_migrations(out_dir):
-        print(f'    {migration_line}')
+    # DATABASE_FILE = out_dir / SQL_INDEX_FILENAME
+    # for migration_line in apply_migrations(out_dir):
+    #     print(f'    {migration_line}')
 
-    assert DATABASE_FILE.exists()
-    print()
-    print(f'    √ ./{DATABASE_FILE.relative_to(OUTPUT_DIR)}')
-    
+    # assert DATABASE_FILE.exists()
+    # print()
+    # print(f'    √ ./{DATABASE_FILE.relative_to(OUTPUT_DIR)}')
+    call_command("makemigrations")
+    call_command("migrate")
     # from django.contrib.auth.models import User
     # if IS_TTY and not User.objects.filter(is_superuser=True).exists():
     #     print('{green}[+] Creating admin user account...{reset}'.format(**ANSI))

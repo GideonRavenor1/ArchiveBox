@@ -51,7 +51,7 @@ def write_link_to_sql_index(link: Link):
             info["timestamp"] = str(float(info["timestamp"]) + 1.0)
 
         snapshot, _ = Snapshot.objects.update_or_create(url=link.url, defaults=info)
-    snapshot.save_tags(tag_list)
+        snapshot.save_tags(tag_list)
 
     for extractor, entries in link.history.items():
         for entry in entries:

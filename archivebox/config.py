@@ -1216,38 +1216,38 @@ def setup_django(out_dir: Path=None, check_db=False, config: ConfigDict=CONFIG, 
             f.write(f"\n> {command}; ts={ts} version={config['VERSION']} docker={config['IN_DOCKER']} is_tty={config['IS_TTY']}\n")
 
 
-        if check_db:
-            # Enable WAL mode in sqlite3
-            from django.db import connection
-            with connection.cursor() as cursor:
-
-                # Set Journal mode to WAL to allow for multiple writers
-                current_mode = cursor.execute("PRAGMA journal_mode")
-                if current_mode != 'wal':
-                    cursor.execute("PRAGMA journal_mode=wal;")
-
-                # Set max blocking delay for concurrent writes and write sync mode
-                # https://litestream.io/tips/#busy-timeout
-                cursor.execute("PRAGMA busy_timeout = 5000;")
-                cursor.execute("PRAGMA synchronous = NORMAL;")
-
-            # Create cache table in DB if needed
-            try:
-                from django.core.cache import cache
-                cache.get('test', None)
-            except django.db.utils.OperationalError:
-                call_command("createcachetable", verbosity=0)
-
-            # if archivebox gets imported multiple times, we have to close
-            # the sqlite3 whenever we init from scratch to avoid multiple threads
-            # sharing the same connection by accident
-            from django.db import connections
-            for conn in connections.all():
-                conn.close_if_unusable_or_obsolete()
-
-            sql_index_path = Path(output_dir) / SQL_INDEX_FILENAME
-            assert sql_index_path.exists(), (
-                f'No database file {SQL_INDEX_FILENAME} found in: {config["OUTPUT_DIR"]} (Are you in an ArchiveBox collection directory?)')
+        # if check_db:
+        #     # Enable WAL mode in sqlite3
+        #     from django.db import connection
+        #     with connection.cursor() as cursor:
+        #
+        #         # Set Journal mode to WAL to allow for multiple writers
+        #         current_mode = cursor.execute("PRAGMA journal_mode")
+        #         if current_mode != 'wal':
+        #             cursor.execute("PRAGMA journal_mode=wal;")
+        #
+        #         # Set max blocking delay for concurrent writes and write sync mode
+        #         # https://litestream.io/tips/#busy-timeout
+        #         cursor.execute("PRAGMA busy_timeout = 5000;")
+        #         cursor.execute("PRAGMA synchronous = NORMAL;")
+        #
+        #     # Create cache table in DB if needed
+        #     try:
+        #         from django.core.cache import cache
+        #         cache.get('test', None)
+        #     except django.db.utils.OperationalError:
+        #         call_command("createcachetable", verbosity=0)
+        #
+        #     # if archivebox gets imported multiple times, we have to close
+        #     # the sqlite3 whenever we init from scratch to avoid multiple threads
+        #     # sharing the same connection by accident
+        #     from django.db import connections
+        #     for conn in connections.all():
+        #         conn.close_if_unusable_or_obsolete()
+        #
+        #     sql_index_path = Path(output_dir) / SQL_INDEX_FILENAME
+        #     assert sql_index_path.exists(), (
+        #         f'No database file {SQL_INDEX_FILENAME} found in: {config["OUTPUT_DIR"]} (Are you in an ArchiveBox collection directory?)')
 
     except KeyboardInterrupt:
         raise SystemExit(2)

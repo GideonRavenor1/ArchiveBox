@@ -143,19 +143,29 @@ TEMPLATES = [
 ### External Service Settings
 ################################################################################
 
-DATABASE_FILE = Path(OUTPUT_DIR) / SQL_INDEX_FILENAME
-DATABASE_NAME = os.environ.get("ARCHIVEBOX_DATABASE_NAME", str(DATABASE_FILE))
+# DATABASE_FILE = Path(OUTPUT_DIR) / SQL_INDEX_FILENAME
+# DATABASE_NAME = os.environ.get("ARCHIVEBOX_DATABASE_NAME", str(DATABASE_FILE))
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': DATABASE_NAME,
+#         'OPTIONS': {
+#             'timeout': 60,
+#             'check_same_thread': False,
+#         },
+#         'TIME_ZONE': TIMEZONE,
+#         # DB setup is sometimes modified at runtime by setup_django() in config.py
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DATABASE_NAME,
-        'OPTIONS': {
-            'timeout': 60,
-            'check_same_thread': False,
-        },
-        'TIME_ZONE': TIMEZONE,
-        # DB setup is sometimes modified at runtime by setup_django() in config.py
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'archive_data',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'postgres',
+        'PORT': '5432'
     }
 }
 

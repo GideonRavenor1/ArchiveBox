@@ -17,8 +17,8 @@ services:
             context: .
             dockerfile: Dockerfile
         command: server --quick-init 0.0.0.0:8000
-        ports:
-            - 8000:8000
+        expose:
+            - "8000"
         environment:
             - ALLOWED_HOSTS=*                   # add any config options you want as env vars
             - MEDIA_MAX_SIZE=750m
@@ -34,7 +34,30 @@ services:
         volumes:
             - ./data:/data
             # - ./archivebox:/app/archivebox    # for developers working on archivebox
+        restart: always
 
+    postgres:
+        image: postgres:15.0-alpine3.16
+        container_name: archive-postgres
+        expose:
+            - "5432"
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=archive_data
+        volumes:
+            - archive-pgdata:/var/lib/postgresql/data/
+        restart: always
+
+    nginx:
+        image: nginx:1.22.0-alpine
+        ports:
+            - "443:443"
+            - "80:80"
+        volumes:
+            - ./archive.conf:/etc/nginx/conf.d/archive.conf
+            - ./data:/var/www
+        restart: always
 
     ### Optional Addons: tweak these examples as needed for your specific use case
 
@@ -120,3 +143,6 @@ services:
     #     volumes:
     #         - ./data:/archivebox
     #         - ./data/wayback:/webarchive
+
+volumes:
+    archive-pgdata:
