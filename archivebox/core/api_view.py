@@ -63,7 +63,7 @@ class CreateArchiveAPIView(View):
 
     def _archive_snapshot(self, url: str) -> Optional[Snapshot]:
         self.input_kwargs['urls'] = url
-        result = add(**self.input_kwargs)
+        result: list[Snapshot] = add(**self.input_kwargs)  # type: ignore
         current_snapshot = self._get_current_snapshot(result, url)
         return current_snapshot
 
