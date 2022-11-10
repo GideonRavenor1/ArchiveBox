@@ -46,6 +46,8 @@ INSTALL_REQUIRES = [
     "croniter>=0.3.34",
     "w3lib>=1.22.0",
     "ipython>5.0.0",
+    "psycopg2-binary>=2.8.3",
+    # "gunicorn==20.0.4",
 ]
 EXTRAS_REQUIRE = {
     'sonic': [
