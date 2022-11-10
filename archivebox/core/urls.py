@@ -38,7 +38,7 @@ urlpatterns = [
     path('index.html', RedirectView.as_view(url='/')),
     path('index.json', static.serve, {'document_root': settings.OUTPUT_DIR, 'path': 'index.json'}),
     path('', HomepageView.as_view(), name='Home'),
-    path('custom/', CreateArchiveAPIView.as_view(), name='api-archive-post')
+    path('api/v1/archive/', CreateArchiveAPIView.as_view(), name='api-archive')
 ]
 urlpatterns += staticfiles_urlpatterns()
 
