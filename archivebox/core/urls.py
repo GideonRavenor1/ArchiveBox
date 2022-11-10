@@ -6,6 +6,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.views.generic.base import RedirectView
 
+from core.api_view import CreateArchiveAPIView
 from core.views import HomepageView, SnapshotView, PublicIndexView, AddView, HealthCheckView
 
 
@@ -37,6 +38,7 @@ urlpatterns = [
     path('index.html', RedirectView.as_view(url='/')),
     path('index.json', static.serve, {'document_root': settings.OUTPUT_DIR, 'path': 'index.json'}),
     path('', HomepageView.as_view(), name='Home'),
+    path('custom/', CreateArchiveAPIView.as_view(), name='api-archive-post')
 ]
 urlpatterns += staticfiles_urlpatterns()
 
@@ -45,36 +47,3 @@ if settings.DEBUG_TOOLBAR:
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
     ]
-
-
-# # Proposed FUTURE URLs spec
-# path('',                 HomepageView)
-# path('/add',             AddView)
-# path('/public',          PublicIndexView)
-# path('/snapshot/:slug',  SnapshotView)
-
-# path('/admin',           admin.site.urls)
-# path('/accounts',        django.contrib.auth.urls)
-
-# # Prposed REST API spec
-# # :slugs can be uuid, short_uuid, or any of the unique index_fields
-# path('api/v1/'),
-# path('api/v1/core/'                      [GET])
-# path('api/v1/core/snapshot/',            [GET, POST, PUT]),
-# path('api/v1/core/snapshot/:slug',       [GET, PATCH, DELETE]),
-# path('api/v1/core/archiveresult',        [GET, POST, PUT]),
-# path('api/v1/core/archiveresult/:slug',  [GET, PATCH, DELETE]),
-# path('api/v1/core/tag/',                 [GET, POST, PUT]),
-# path('api/v1/core/tag/:slug',            [GET, PATCH, DELETE]),
-
-# path('api/v1/cli/',                      [GET])
-# path('api/v1/cli/{add,list,config,...}', [POST]),  # pass query as kwargs directly to `run_subcommand` and return stdout, stderr, exitcode
-
-# path('api/v1/extractors/',                    [GET])
-# path('api/v1/extractors/:extractor/',         [GET]),
-# path('api/v1/extractors/:extractor/:func',    [GET, POST]),  # pass query as args directly to chosen function
-
-# future, just an idea:
-# path('api/v1/scheduler/',                [GET])
-# path('api/v1/scheduler/task/',           [GET, POST, PUT]),
-# path('api/v1/scheduler/task/:slug',      [GET, PATCH, DELETE]),

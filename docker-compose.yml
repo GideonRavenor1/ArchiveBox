@@ -8,18 +8,24 @@
 # Documentation:
 #     https://github.com/ArchiveBox/ArchiveBox/wiki/Docker#docker-compose
 
-version: '2.4'   # '3.9' or greater also works
+version: '3'   # '3.9' or greater also works
 
 services:
     archivebox:
         # build: .                              # for developers working on archivebox
-        image: ${DOCKER_IMAGE:-archivebox/archivebox:master}
+        build:
+            context: .
+            dockerfile: Dockerfile
         command: server --quick-init 0.0.0.0:8000
         ports:
             - 8000:8000
         environment:
             - ALLOWED_HOSTS=*                   # add any config options you want as env vars
             - MEDIA_MAX_SIZE=750m
+            - TIMEOUT=120
+            - PUBLIC_INDEX=True
+            - PUBLIC_SNAPSHOTS=True
+            - PUBLIC_ADD_VIEW=True
             # - SEARCH_BACKEND_ENGINE=sonic     # uncomment these if you enable sonic below
             # - SEARCH_BACKEND_HOST_NAME=sonic
             # - SEARCH_BACKEND_PASSWORD=SecretPassword
@@ -45,8 +51,8 @@ services:
     #    volumes:
     #        - ./sonic.cfg:/etc/sonic.cfg:ro
     #        - ./data/sonic:/var/lib/sonic/store
-    
-    
+
+
     ### Example: To run pihole in order to block ad/tracker requests during archiving,
     # uncomment this block and set up pihole using its admin interface
 
