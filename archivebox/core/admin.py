@@ -204,10 +204,11 @@ class SnapshotAdmin(SearchResultsAdminMixin, admin.ModelAdmin):
     size.admin_order_field = 'archiveresult__count'
 
     def url_str(self, obj):
+        url = obj.url.rsplit('#')[0]
         return format_html(
             '<a href="{}"><code style="user-select: all;">{}</code></a>',
-            obj.url,
-            obj.url,
+            url,
+            url,
         )
 
     def grid_view(self, request, extra_context=None):
