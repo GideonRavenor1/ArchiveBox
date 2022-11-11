@@ -160,6 +160,7 @@ services:
         volumes:
             - ./archive.conf:/etc/nginx/conf.d/archive.conf
             - ./data:/var/www
+            - /services/archivebox/ssl:/ssl
         restart: always
 
     ### Optional Addons: tweak these examples as needed for your specific use case
