@@ -38,3 +38,7 @@ def result_list_tag(parser, token):
         template_name='snapshots_grid.html',
         takes_context=False,
     )
+
+@register.filter(name='url_filter')
+def url_filter(url: str):
+    return url.rsplit('_', 1)[0]

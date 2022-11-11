@@ -43,7 +43,6 @@ def write_link_to_sql_index(link: Link):
         tag.strip() for tag in re.split(TAG_SEPARATOR_PATTERN, link.tags or '')
     ))
     info.pop('tags')
-
     try:
         info["timestamp"] = Snapshot.objects.get(url=link.url).timestamp
     except Snapshot.DoesNotExist:
@@ -52,6 +51,7 @@ def write_link_to_sql_index(link: Link):
 
         snapshot, _ = Snapshot.objects.update_or_create(url=link.url, defaults=info)
         snapshot.save_tags(tag_list)
+    snapshot = Snapshot.objects.get(url=link.url)
 
     for extractor, entries in link.history.items():
         for entry in entries:

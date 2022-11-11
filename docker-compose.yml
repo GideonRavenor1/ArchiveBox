@@ -11,11 +11,12 @@
 version: '3'   # '3.9' or greater also works
 
 services:
-    archivebox:
+    archivebox_main:
         # build: .                              # for developers working on archivebox
         build:
             context: .
             dockerfile: Dockerfile
+        image: tardis/archivebox:latest
         command: server --quick-init 0.0.0.0:8000
         expose:
             - "8000"
@@ -35,6 +36,108 @@ services:
             - ./data:/data
             # - ./archivebox:/app/archivebox    # for developers working on archivebox
         restart: always
+        depends_on:
+            - postgres
+
+    archivebox_api_1:
+        image: tardis/archivebox:latest
+        command: server 0.0.0.0:8000
+        expose:
+            - "8000"
+        environment:
+            - ALLOWED_HOSTS=*                   # add any config options you want as env vars
+            - MEDIA_MAX_SIZE=750m
+            - TIMEOUT=120
+            - PUBLIC_INDEX=True
+            - PUBLIC_SNAPSHOTS=True
+            - PUBLIC_ADD_VIEW=True
+            # - SEARCH_BACKEND_ENGINE=sonic     # uncomment these if you enable sonic below
+            # - SEARCH_BACKEND_HOST_NAME=sonic
+            # - SEARCH_BACKEND_PASSWORD=SecretPassword
+            # dns:                                  # uncomment to use pihole below for ad/tracker blocking during archiving
+            # - pihole
+        volumes:
+            - ./data:/data
+            # - ./archivebox:/app/archivebox    # for developers working on archivebox
+        restart: always
+        depends_on:
+            - postgres
+            - archivebox_main
+
+    archivebox_api_2:
+        image: tardis/archivebox:latest
+        command: server 0.0.0.0:8000
+        expose:
+            - "8000"
+        environment:
+            - ALLOWED_HOSTS=*                   # add any config options you want as env vars
+            - MEDIA_MAX_SIZE=750m
+            - TIMEOUT=120
+            - PUBLIC_INDEX=True
+            - PUBLIC_SNAPSHOTS=True
+            - PUBLIC_ADD_VIEW=True
+            # - SEARCH_BACKEND_ENGINE=sonic     # uncomment these if you enable sonic below
+            # - SEARCH_BACKEND_HOST_NAME=sonic
+            # - SEARCH_BACKEND_PASSWORD=SecretPassword
+            # dns:                                  # uncomment to use pihole below for ad/tracker blocking during archiving
+            # - pihole
+        volumes:
+            - ./data:/data
+            # - ./archivebox:/app/archivebox    # for developers working on archivebox
+        restart: always
+        depends_on:
+            - postgres
+            - archivebox_main
+
+    archivebox_api_3:
+        image: tardis/archivebox:latest
+        command: server 0.0.0.0:8000
+        expose:
+            - "8000"
+        environment:
+            - ALLOWED_HOSTS=*                   # add any config options you want as env vars
+            - MEDIA_MAX_SIZE=750m
+            - TIMEOUT=120
+            - PUBLIC_INDEX=True
+            - PUBLIC_SNAPSHOTS=True
+            - PUBLIC_ADD_VIEW=True
+            # - SEARCH_BACKEND_ENGINE=sonic     # uncomment these if you enable sonic below
+            # - SEARCH_BACKEND_HOST_NAME=sonic
+            # - SEARCH_BACKEND_PASSWORD=SecretPassword
+            # dns:                                  # uncomment to use pihole below for ad/tracker blocking during archiving
+            # - pihole
+        volumes:
+            - ./data:/data
+            # - ./archivebox:/app/archivebox    # for developers working on archivebox
+        restart: always
+        depends_on:
+            - postgres
+            - archivebox_main
+
+    archivebox_api_4:
+        image: tardis/archivebox:latest
+        command: server 0.0.0.0:8000
+        expose:
+            - "8000"
+        environment:
+            - ALLOWED_HOSTS=*                   # add any config options you want as env vars
+            - MEDIA_MAX_SIZE=750m
+            - TIMEOUT=120
+            - PUBLIC_INDEX=True
+            - PUBLIC_SNAPSHOTS=True
+            - PUBLIC_ADD_VIEW=True
+            # - SEARCH_BACKEND_ENGINE=sonic     # uncomment these if you enable sonic below
+            # - SEARCH_BACKEND_HOST_NAME=sonic
+            # - SEARCH_BACKEND_PASSWORD=SecretPassword
+            # dns:                                  # uncomment to use pihole below for ad/tracker blocking during archiving
+            # - pihole
+        volumes:
+            - ./data:/data
+            # - ./archivebox:/app/archivebox    # for developers working on archivebox
+        restart: always
+        depends_on:
+            - postgres
+            - archivebox_main
 
     postgres:
         image: postgres:15.0-alpine3.16

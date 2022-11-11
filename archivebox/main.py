@@ -582,7 +582,9 @@ def add(urls: Union[str, List[str]],
         init: bool=False,
         extractors: str="",
         parser: str="auto",
-        out_dir: Path=OUTPUT_DIR) -> List[Link]:
+        out_dir: Path=OUTPUT_DIR,
+        return_only_new: bool = False,
+        ) -> List[Link]:
     """Add a new URL or list of URLs to your archive"""
 
     from core.models import Tag
@@ -674,7 +676,8 @@ def add(urls: Union[str, List[str]],
             snapshot.tags_str(nocache=True)
             snapshot.save()
         # print(f'    √ Tagged {len(imported_links)} Snapshots with {len(tags)} tags {tags_str}')
-
+    if return_only_new:
+        return new_links
 
     return all_links
 
