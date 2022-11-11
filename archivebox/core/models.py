@@ -88,7 +88,7 @@ class Snapshot(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     url = models.URLField(unique=True, db_index=True, max_length=2200)
-    timestamp = models.CharField(max_length=64, unique=True, db_index=True)
+    timestamp = models.CharField(max_length=32, unique=True, db_index=True)
 
     title = models.CharField(max_length=1024, null=True, blank=True, db_index=True)
 
