@@ -6,13 +6,13 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.views.generic.base import RedirectView
 
-from core.api_view import CreateArchiveAPIView
 from core.views import HomepageView, SnapshotView, PublicIndexView, AddView, HealthCheckView
 
 
 # print('DEBUG', settings.DEBUG)
 
 urlpatterns = [
+    path('api/tardis/v1/', include('tardis_api.urls')),
     path('public/', PublicIndexView.as_view(), name='public-index'),
 
     path('robots.txt', static.serve, {'document_root': settings.STATICFILES_DIRS[0], 'path': 'robots.txt'}),
@@ -38,7 +38,6 @@ urlpatterns = [
     path('index.html', RedirectView.as_view(url='/')),
     path('index.json', static.serve, {'document_root': settings.OUTPUT_DIR, 'path': 'index.json'}),
     path('', HomepageView.as_view(), name='Home'),
-    path('api/v1/archive/', CreateArchiveAPIView.as_view(), name='api-archive')
 ]
 urlpatterns += staticfiles_urlpatterns()
 

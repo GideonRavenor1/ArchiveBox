@@ -1,12 +1,14 @@
 __package__ = 'archivebox.extractors'
 
 import os
+import sys
 from pathlib import Path
 
 from typing import Optional, List, Iterable, Union
 from datetime import datetime, timezone
 from django.db.models import QuerySet
 
+from config import VERSION, IS_TTY, IN_DOCKER
 from ..core.settings import ERROR_LOG
 from ..index.schema import Link
 from ..index.sql import write_link_to_sql_index
@@ -146,7 +148,7 @@ def archive_link(link: Link, overwrite: bool=False, methods: Optional[Iterable[s
                         method_name,
                         link.url,
                     ) + "\n"))
-                    #f.write(f"\n> {command}; ts={ts} version={config['VERSION']} docker={config['IN_DOCKER']} is_tty={config['IS_TTY']}\n")
+                    f.write(f"\n> {command}; ts={ts} version={VERSION} docker={IN_DOCKER} is_tty={IS_TTY}\n")
 
         # print('    ', stats)
 

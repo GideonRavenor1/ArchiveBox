@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
 
     'core',
+    'tardis_api.apps.TardisApiConfig',
 
     'django_extensions',
 ]
@@ -165,7 +166,11 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'postgres',
-        'PORT': '5432'
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c statement_timeout=60000',
+        }
+
     }
 }
 
