@@ -8,7 +8,7 @@ from typing import Optional, List, Iterable, Union
 from datetime import datetime, timezone
 from django.db.models import QuerySet
 
-from config import VERSION, IS_TTY, IN_DOCKER
+from ..config import VERSION, IS_TTY, IN_DOCKER
 from ..core.settings import ERROR_LOG
 from ..index.schema import Link
 from ..index.sql import write_link_to_sql_index
