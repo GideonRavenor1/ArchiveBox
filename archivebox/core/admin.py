@@ -208,7 +208,7 @@ class SnapshotAdmin(SearchResultsAdminMixin, admin.ModelAdmin):
         return format_html(
             '<a href="{}"><code style="user-select: all;">{}</code></a>',
             url,
-            url,
+            obj.url,
         )
 
     def grid_view(self, request, extra_context=None):

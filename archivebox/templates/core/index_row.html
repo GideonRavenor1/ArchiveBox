@@ -2,7 +2,7 @@
 
 <tr>
     <td title="Bookmarked: {{link.bookmarked_date|localtime}} ({{link.timestamp}})" data-sort="{{link.added.timestamp}}">
-        {{ link.added|localtime }}
+        {{ link.added|localtime|date:"d.m.Y" }} {{ link.added|localtime|time:"H:i:s" }}
     </td>
     <td class="title-col" style="opacity: {% if link.title %}1{% else %}0.3{% endif %}" title="{{link.title|default:'Not yet archived...'}}">
         {% if link.is_archived %}
@@ -37,8 +37,8 @@
         </span>
     </td>
     <td style="text-align:left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; title="{{link.url}}">
-        <a href="{{link.url}}">
-            {{link.url|url_filter}}
+        <a href="{{link.without_path}}">
+            {{link.without_path}}
         </a>
     </td>
 </tr>

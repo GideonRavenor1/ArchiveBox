@@ -17,7 +17,7 @@ from django.contrib.auth.models import User   # noqa
 
 from ..config import ARCHIVE_DIR, ARCHIVE_DIR_NAME
 from ..system import get_dir_size
-from ..util import parse_date, base_url, hashurl
+from ..util import parse_date, base_url, hashurl, without_path
 from ..index.schema import Link
 from ..index.html import snapshot_icons
 from ..extractors import get_default_archive_methods, ARCHIVE_METHODS_INDEXING_PRECEDENCE
@@ -253,6 +253,10 @@ class Snapshot(models.Model):
                 tags_id.append(Tag.objects.get_or_create(name=tag)[0].id)
         self.tags.clear()
         self.tags.add(*tags_id)
+
+    @cached_property
+    def without_path(self):
+        return without_path(self.url)
 
 
 class ArchiveResultManager(models.Manager):
