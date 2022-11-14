@@ -100,7 +100,7 @@ def archive_link(link: Link, overwrite: bool=False, methods: Optional[Iterable[s
         link = link.overwrite(updated=datetime.now(timezone.utc))
         stats = {'skipped': 0, 'succeeded': 0, 'failed': 0}
         start_ts = datetime.now(timezone.utc)
-
+        archive_result_list = []
         for method_name, should_run, method_function in ARCHIVE_METHODS:
             try:
                 if method_name not in link.history:
@@ -116,8 +116,11 @@ def archive_link(link: Link, overwrite: bool=False, methods: Optional[Iterable[s
                     stats[result.status] += 1
                     log_archive_method_finished(result)
                     write_search_index(link=link, texts=result.index_texts)
-                    ArchiveResult.objects.create(snapshot=snapshot, extractor=method_name, cmd=result.cmd, cmd_version=result.cmd_version,
-                                                 output=result.output, pwd=result.pwd, start_ts=result.start_ts, end_ts=result.end_ts, status=result.status)
+                    archive_result_list.append(ArchiveResult(
+                        snapshot=snapshot, extractor=method_name, cmd=result.cmd,
+                        cmd_version=result.cmd_version, output=result.output, pwd=result.pwd,
+                        start_ts=result.start_ts, end_ts=result.end_ts, status=result.status
+                    ))
 
 
                     # bump the updated time on the main Snapshot here, this is critical
@@ -150,7 +153,7 @@ def archive_link(link: Link, overwrite: bool=False, methods: Optional[Iterable[s
                     ) + "\n"))
                     f.write(f"\n> {command}; ts={ts} version={VERSION} docker={IN_DOCKER} is_tty={IS_TTY}\n")
 
-        # print('    ', stats)
+        ArchiveResult.objects.bulk_create(archive_result_list)
 
         try:
             latest_title = link.history['title'][-1].output.strip()

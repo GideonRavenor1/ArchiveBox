@@ -7,7 +7,7 @@ from main import oneshot
 class Archiver:
     _input_kwargs = {
         'url': '',
-        'extractors': 'title,singlefile,pdf,screenshot',
+        'extractors': 'title,singlefile,pdf',
         'return_link_obj': True,
         'timestamp_dir_name': True,
     }
