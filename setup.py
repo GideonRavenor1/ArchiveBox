@@ -38,7 +38,7 @@ INSTALL_REQUIRES = [
     # ./archivebox/vendor/
     "requests>=2.24.0",
     "mypy-extensions>=0.4.3",
-    "django>=3.1.3,<3.2",
+    "django>=4.1.3",
     "django-extensions>=3.0.3",
     "dateparser>=1.0.0",
     "youtube-dl>=2021.04.17",
@@ -46,7 +46,8 @@ INSTALL_REQUIRES = [
     "croniter>=0.3.34",
     "w3lib>=1.22.0",
     "ipython>5.0.0",
-    "psycopg2-binary>=2.8.3",
+    "psycopg2-binary>=2.9.5",
+
     # "gunicorn==20.0.4",
 ]
 EXTRAS_REQUIRE = {

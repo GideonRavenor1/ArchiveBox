@@ -90,7 +90,7 @@ class Snapshot(models.Model):
     url = models.URLField(unique=True, db_index=True, max_length=2200)
     timestamp = models.CharField(max_length=32, unique=True, db_index=True)
 
-    title = models.CharField(max_length=1024, null=True, blank=True, db_index=True)
+    title = models.CharField(max_length=2048, null=True, blank=True, db_index=True)
 
     added = models.DateTimeField(auto_now_add=True, db_index=True)
     updated = models.DateTimeField(auto_now=True, blank=True, null=True, db_index=True)
@@ -279,7 +279,7 @@ class ArchiveResult(models.Model):
     cmd = JSONField()
     pwd = models.CharField(max_length=256)
     cmd_version = models.CharField(max_length=128, default=None, null=True, blank=True)
-    output = models.CharField(max_length=1024)
+    output = models.CharField(max_length=2048)
     start_ts = models.DateTimeField(db_index=True)
     end_ts = models.DateTimeField()
     status = models.CharField(max_length=16, choices=STATUS_CHOICES)

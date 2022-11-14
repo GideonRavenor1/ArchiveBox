@@ -1,7 +1,12 @@
+import logging
 import uuid
 from datetime import datetime, timezone
+from typing import Optional
 
+from index import Link
 from main import oneshot
+
+logger = logging.getLogger(__name__)
 
 
 class Archiver:
@@ -12,9 +17,14 @@ class Archiver:
         'timestamp_dir_name': True,
     }
 
-    def archive(self, url: str):
+    def archive(self, url: str) -> Optional[Link]:
         data = self._prepare_data(url=url)
-        return oneshot(**data)
+        try:
+            result = oneshot(**data)
+        except Exception as error:
+            logger.error(f'[tardis_api] Ошибка при архивации: {str(error)}')
+            result = None
+        return result
 
     def _prepare_data(self, url: str) -> dict:
         timestamp = datetime.now(timezone.utc).isoformat('T', 'seconds')
