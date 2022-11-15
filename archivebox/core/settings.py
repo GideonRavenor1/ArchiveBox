@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'tardis_api.apps.TardisApiConfig',
 
     'django_extensions',
+    'django_dbconn_retry',
 ]
 
 

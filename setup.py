@@ -47,6 +47,7 @@ INSTALL_REQUIRES = [
     "w3lib>=1.22.0",
     "ipython>5.0.0",
     "psycopg2-binary>=2.9.5",
+    "django-dbconn-retry>=0.1.7"
 
     # "gunicorn==20.0.4",
 ]
