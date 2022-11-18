@@ -13,6 +13,5 @@ class Command(BaseCommand):
         parser.add_argument('subcommand', type=str, help='The subcommand you want to run')
         parser.add_argument('command_args', nargs='*', help='Arguments to pass to the subcommand')
 
-
     def handle(self, *args, **kwargs):
         run_subcommand(kwargs['subcommand'], args=kwargs['command_args'])

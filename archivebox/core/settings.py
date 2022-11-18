@@ -160,20 +160,43 @@ TEMPLATES = [
 #         # DB setup is sometimes modified at runtime by setup_django() in config.py
 #     }
 # }
+
+POSTGRES_DB = 'archive_data'
+POSTGRES_USER = 'postgres'
+POSTGRES_PASSWORD = 'postgres'
+POSTGRES_HOST = 'postgres'
+POSTGRES_PORT = '5432'
+RESULT_BACKEND_DB = 'celery_results'
+
+AMQP_HOST = 'rabbitmq'
+AMQP_PORT = '5672'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'archive_data',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'postgres',
-        'PORT': '5432',
+        'NAME': POSTGRES_DB,
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': POSTGRES_HOST,
+        'PORT': POSTGRES_PORT,
         'OPTIONS': {
             'options': '-c statement_timeout=60000',
         }
 
     }
 }
+
+CELERY_BROKER_URL = f'amqp://{AMQP_HOST}:{AMQP_PORT}'
+
+CELERY_RESULT_BACKEND = (
+    f'db+postgres://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{RESULT_BACKEND_DB}'
+)
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_TIME_LIMIT = 15 * 60
+CELERY_TASK_SOFT_TIME_LIMIT = 7 * 24 * 60 * 60  # week
+CELERY_TIMEZONE = TIMEZONE
 
 CACHE_BACKEND = 'django.core.cache.backends.locmem.LocMemCache'
 # CACHE_BACKEND = 'django.core.cache.backends.db.DatabaseCache'
